@@ -16,25 +16,18 @@ export const Main = () => {
   const [theme, setTheme] = React.useState<'light' | 'dark'>(
     colorScheme === 'dark' ? 'dark' : 'light'
   );
-  const [rtl] = React.useState<boolean>(I18nManager.isRTL);
 
   function toggleTheme() {
     setTheme(theme => (theme === 'light' ? 'dark' : 'light'));
   }
 
-  const toggleRTL = React.useCallback(() => {
-    I18nManager.forceRTL(!rtl);
-    Updates.reloadFromCache();
-  }, [rtl]);
 
   const preferences = React.useMemo(
     () => ({
       toggleTheme,
-      toggleRTL,
       theme,
-      rtl: (rtl ? 'right' : 'left') as 'right' | 'left',
     }),
-    [rtl, theme, toggleRTL]
+    [theme]
   );
 
   return (
@@ -44,11 +37,11 @@ export const Main = () => {
           theme === 'light'
             ? {
                 ...DefaultTheme,
-                colors: { ...DefaultTheme.colors, primary: '#1ba1f2' },
+                colors: { ...DefaultTheme.colors, primary: '#ff3f2a' },
               }
             : {
                 ...DarkTheme,
-                colors: { ...DarkTheme.colors, primary: '#1ba1f2' },
+                colors: { ...DarkTheme.colors, primary: '#ff3f2a' },
               }
         }
       >

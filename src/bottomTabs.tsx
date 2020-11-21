@@ -3,7 +3,11 @@ import color from 'color';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { useTheme, Portal, FAB } from 'react-native-paper';
 import { useSafeArea } from 'react-native-safe-area-context';
-import { useIsFocused, RouteProp, getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import {
+  useIsFocused,
+  RouteProp,
+  getFocusedRouteNameFromRoute,
+} from '@react-navigation/native';
 
 import overlay from './overlay';
 import { Feed } from './feed';
@@ -27,7 +31,7 @@ export const BottomTabs = (props: Props) => {
   let icon = 'feather';
 
   switch (routeName) {
-    case 'Messages':
+    case 'Trening':
       icon = 'email-plus-outline';
       break;
     default:
@@ -76,7 +80,7 @@ export const BottomTabs = (props: Props) => {
           style={{
             position: 'absolute',
             bottom: safeArea.bottom + 65,
-            right: 16,
+            right: 0,
           }}
           color="white"
           theme={{

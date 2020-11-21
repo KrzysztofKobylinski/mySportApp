@@ -1,10 +1,12 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
   DrawerContentComponentProps,
+  DrawerNavigationProp,
   DrawerContentOptions,
   DrawerContentScrollView,
   DrawerItem,
 } from '@react-navigation/drawer';
+
 import React from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { addUser, addUser2 } from './firebase';
@@ -28,9 +30,7 @@ type Props = DrawerContentComponentProps<DrawerNavigationProp>;
 
 export function DrawerContent(props: Props) {
   const paperTheme = useTheme();
-  const { rtl, theme, toggleRTL, toggleTheme } = React.useContext(
-    PreferencesContext
-  );
+  const { theme, toggleTheme } = React.useContext(PreferencesContext);
 
   const translateX = Animated.interpolate(props.progress, {
     inputRange: [0, 0.5, 0.7, 0.8, 1],

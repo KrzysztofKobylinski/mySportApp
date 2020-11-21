@@ -24,7 +24,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "NSLocationAlwaysAndWhenInUseUsageDescription",
+        "NSLocationAlwaysUsageDescription": "NSLocationAlwaysUsageDescription",
+        "NSLocationWhenInUseUsageDescription": "NSLocationWhenInUseUsageDescription"
+      }
     },
     "android": {
       

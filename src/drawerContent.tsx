@@ -1,3 +1,4 @@
+import _, { StringNullableChain } from 'lodash';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
   DrawerContentComponentProps,
@@ -7,9 +8,14 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { addUser, addUser2 } from './firebase';
+import {
+  storeLocalData,
+  getLocalData,
+  clearAll,
+} from './dataManagement/localStorage';
+import { addUser, addUser2 } from './dataManagement/firebase';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import {
   Avatar,
@@ -27,16 +33,51 @@ import Animated from 'react-native-reanimated';
 import { PreferencesContext } from './context/preferencesContext';
 
 type Props = DrawerContentComponentProps<DrawerNavigationProp>;
-
+type UserData = {
+  id?: string;
+  name?: string;
+  surname?: string;
+  height?: number;
+  weigth?: number;
+  age?: number;
+};
 export function DrawerContent(props: Props) {
   const paperTheme = useTheme();
   const { theme, toggleTheme } = React.useContext(PreferencesContext);
+  let initUserData: UserData;
+  initUserData = {};
+  const [userData, setUserData] = useState(initUserData);
 
   const translateX = Animated.interpolate(props.progress, {
     inputRange: [0, 0.5, 0.7, 0.8, 1],
     outputRange: [-100, -85, -70, -45, 0],
   });
 
+  useEffect(() => {
+    if (_.isEmpty(userData)) {
+      getCurrentUserData();
+    }
+  }, [userData.id]);
+
+  const getCurrentUserData = async () => {
+    const userID = await getLocalData('userID');
+    let data = {};
+    if (userID) {
+      data = {
+        // fetch from db
+        id: userID,
+        name: 'Jan',
+        surname: 'Kowalski',
+        age: 20,
+        height: 180,
+        weigth: 80,
+      };
+    }
+    setUserData(data);
+  };
+
+  const title = `${userData.id || ''} ${userData.name ||
+    ''} ${userData.surname || ''}`;
   return (
     <DrawerContentScrollView {...props}>
       <Animated.View
@@ -62,9 +103,36 @@ export function DrawerContent(props: Props) {
               color={paperTheme.colors.primary}
             />
           </TouchableOpacity>
-          <Title style={styles.title}>Profile Name</Title>
+          <Title style={styles.title}>
+            {!_.isEmpty(title) ? title : 'no title'}
+          </Title>
         </View>
 
+        <Drawer.Section title="Account informations">
+          <TouchableRipple
+            onPress={async () => {
+              storeLocalData('userID', 69);
+              getCurrentUserData();
+            }}
+          >
+            <View style={styles.preference}>
+              <Text>Store data test</Text>
+              <View pointerEvents="none">
+                <Text>{'ddd'}</Text>
+              </View>
+            </View>
+          </TouchableRipple>
+          <TouchableRipple
+            onPress={async () => {
+              clearAll();
+              getCurrentUserData();
+            }}
+          >
+            <View style={styles.preference}>
+              <Text>Clear local storage</Text>
+            </View>
+          </TouchableRipple>
+        </Drawer.Section>
         <Drawer.Section title="User informations">
           <TouchableRipple
             onPress={() => {
@@ -75,7 +143,7 @@ export function DrawerContent(props: Props) {
             <View style={styles.preference}>
               <Text>Age</Text>
               <View pointerEvents="none">
-                <Text>0</Text>
+                <Text>{userData.age || '?'}</Text>
               </View>
             </View>
           </TouchableRipple>
@@ -86,9 +154,9 @@ export function DrawerContent(props: Props) {
             }}
           >
             <View style={styles.preference}>
-              <Text>Heigth</Text>
+              <Text>Height</Text>
               <View pointerEvents="none">
-                <Text>0</Text>
+                <Text>{userData.height || '?'}</Text>
               </View>
             </View>
           </TouchableRipple>
@@ -96,7 +164,7 @@ export function DrawerContent(props: Props) {
             <View style={styles.preference}>
               <Text>Weigth</Text>
               <View pointerEvents="none">
-                <Text>0</Text>
+                <Text>{userData.weigth || '?'}</Text>
               </View>
             </View>
           </TouchableRipple>

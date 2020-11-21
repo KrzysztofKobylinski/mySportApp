@@ -80,6 +80,9 @@ export const Notifications = () => {
     ? (overlay(4, theme.colors.surface) as string)
     : theme.colors.surface;
 
+  const rippleColor = theme.dark
+    ? color(tabBarColor).lighten(0.5)
+    : color(tabBarColor).darken(0.2);
   return (
     <React.Fragment>
       <Text> Lat:{positionLat}</Text>

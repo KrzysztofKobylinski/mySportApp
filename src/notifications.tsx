@@ -14,8 +14,8 @@ const Mentions = () => <Feed />; */
 
 export const Notifications = () => {
   const [visible, setVisible] = React.useState(false);
-  const [positionLat, setPositionLat] = React.useState(0);
-  const [positionLon, setPositionLon] = React.useState(0);
+  const [positionLat, setPositionLat] = React.useState(52.20);
+  const [positionLon, setPositionLon] = React.useState(21.10);
   const [positionAlt, setPositionAlt] = React.useState(0);
   const [positionTimeStamp, setPositionTimeStamp] = React.useState(0);
   const [timer, setTimer] = React.useState(0);

@@ -17,10 +17,10 @@ const Mentions = () => <Feed />; */
 
 export const Notifications = () => {
   const [visible, setVisible] = React.useState(false);
-  const [positionLat, setPositionLat] = React.useState(null);
-  const [positionLon, setPositionLon] = React.useState(null);
-  const [positionAlt, setPositionAlt] = React.useState(null);
-  const [positionTimeStamp, setPositionTimeStamp] = React.useState(null);
+  const [positionLat, setPositionLat] = React.useState(52.237049);
+  const [positionLon, setPositionLon] = React.useState(21.017532);
+  const [positionAlt, setPositionAlt] = React.useState(0);
+  const [positionTimeStamp, setPositionTimeStamp] = React.useState(0);
 
   const requestLocationPermission = async () => {
     try {
@@ -78,7 +78,6 @@ export const Notifications = () => {
   const rippleColor = theme.dark
     ? color(tabBarColor).lighten(0.5)
     : color(tabBarColor).darken(0.2);
-
   return (
     <React.Fragment>
       <Text> Lat:{positionLat}</Text>
@@ -86,7 +85,6 @@ export const Notifications = () => {
       <Text> ALT:{positionAlt}</Text>
       <Text>Time :{positionTimeStamp}</Text>
       <Button
-        title="request permissions"
         onPress={requestLocationPermission}
         style={{ width: '100%', height: 50 }}
       >
@@ -116,7 +114,9 @@ export const Notifications = () => {
           longitudeDelta: 0.0421,
         }}
       >
-        <Marker coordinate={{ latitude: positionLat, longitude: positionLon }} />
+        <Marker
+          coordinate={{ latitude: positionLat, longitude: positionLon }}
+        />
       </MapView>
     </React.Fragment>
   );

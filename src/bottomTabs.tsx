@@ -63,7 +63,7 @@ export const BottomTabs = (props: Props) => {
           }}
         />
         <Tab.Screen
-          name="Notifications"
+          name="Mój Trening"
           component={Notifications}
           options={{
             tabBarIcon: 'bell-outline',

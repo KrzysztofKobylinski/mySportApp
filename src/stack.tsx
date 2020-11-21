@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { Appbar, Avatar, useTheme } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 
 import { BottomTabs } from './bottomTabs';
 import { Details } from './details';
@@ -48,7 +48,7 @@ export const StackNavigator = () => {
                     size={40}
                     source={{
                       uri:
-                        'https://pbs.twimg.com/profile_images/952545910990495744/b59hSXUd_400x400.jpg',
+                        'https://avatars2.githubusercontent.com/u/42326043?s=460&u=50906cebe8d834545c50dd97f74697aa0db39479&v=4',
                     }}
                   />
                 </TouchableOpacity>
@@ -56,9 +56,9 @@ export const StackNavigator = () => {
               <Appbar.Content
                 title={
                   title === 'Feed' ? (
-                    <MaterialCommunityIcons
+                    <FontAwesome5
                       style={{ marginRight: 10 }}
-                      name="twitter"
+                      name="running"
                       size={40}
                       color={theme.colors.primary}
                     />

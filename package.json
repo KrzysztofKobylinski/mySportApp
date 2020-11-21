@@ -17,6 +17,7 @@
     "@react-navigation/stack": "^5.2.7",
     "color": "^3.1.2",
     "expo": "~36.0.0",
+    "expo-permissions": "^9.3.0",
     "firebase": "^8.1.1",
     "react": "~16.13.1",
     "react-dom": "~16.13.1",

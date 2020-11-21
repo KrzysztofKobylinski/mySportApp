@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import color from 'color';
-import { Dimensions, Text, PermissionsAndroid } from 'react-native';
-import { useTheme, Button, Menu, Divider, Provider } from 'react-native-paper';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { Text, PermissionsAndroid, Permission } from 'react-native';
+import { useTheme, Button, Menu, Divider } from 'react-native-paper';
 import overlay from './overlay';
-import { Feed } from './feed';
-import { AllNotifications } from './all';
 import MapView, { Marker } from 'react-native-maps';
-import Geolocation from 'react-native-geolocation-service';
+import * as Permissions from 'expo-permissions';
 
 /* const initialLayout = { width: Dimensions.get('window').width };
 
@@ -17,10 +14,25 @@ const Mentions = () => <Feed />; */
 
 export const Notifications = () => {
   const [visible, setVisible] = React.useState(false);
-  const [positionLat, setPositionLat] = React.useState(null);
-  const [positionLon, setPositionLon] = React.useState(null);
-  const [positionAlt, setPositionAlt] = React.useState(null);
-  const [positionTimeStamp, setPositionTimeStamp] = React.useState(null);
+  const [positionLat, setPositionLat] = React.useState(0);
+  const [positionLon, setPositionLon] = React.useState(0);
+  const [positionAlt, setPositionAlt] = React.useState(0);
+  const [positionTimeStamp, setPositionTimeStamp] = React.useState(0);
+  const [timer, setTimer] = React.useState(0);
+
+  const checkLocationAfterTime = () => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        console.log(position);
+        setPositionLat(position.coords.latitude);
+        setPositionLon(position.coords.longitude);
+        setPositionTimeStamp(position.timestamp);
+        setPositionAlt(position.coords.altitude);
+      },
+      err => console.log(err),
+      { enableHighAccuracy: false, timeout: 8000, maximumAge: 10000 }
+    );
+  };
 
   const requestLocationPermission = async () => {
     try {
@@ -35,18 +47,11 @@ export const Notifications = () => {
           buttonPositive: 'OK',
         }
       );
+      console.log(granted, PermissionsAndroid.RESULTS.GRANTED);
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('You can use the Location');
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            setPositionLat(position.coords.latitude);
-            setPositionLon(position.coords.longitude);
-            setPositionTimeStamp(position.timestamp);
-            setPositionAlt(position.coords.altitude);
-          },
-          err => console.log(err),
-          { enableHighAccuracy: false, timeout: 8000, maximumAge: 10000 }
-        );
+
+        checkLocationAfterTime();
       } else {
         console.log('No way');
       }
@@ -75,10 +80,6 @@ export const Notifications = () => {
     ? (overlay(4, theme.colors.surface) as string)
     : theme.colors.surface;
 
-  const rippleColor = theme.dark
-    ? color(tabBarColor).lighten(0.5)
-    : color(tabBarColor).darken(0.2);
-
   return (
     <React.Fragment>
       <Text> Lat:{positionLat}</Text>
@@ -86,7 +87,6 @@ export const Notifications = () => {
       <Text> ALT:{positionAlt}</Text>
       <Text>Time :{positionTimeStamp}</Text>
       <Button
-        title="request permissions"
         onPress={requestLocationPermission}
         style={{ width: '100%', height: 50 }}
       >
@@ -112,11 +112,13 @@ export const Notifications = () => {
         initialRegion={{
           latitude: positionLat,
           longitude: positionLon,
-          latitudeDelta: 0.0922,
+          latitudeDelta: 2.0922,
           longitudeDelta: 0.0421,
         }}
       >
-        <Marker coordinate={{ latitude: positionLat, longitude: positionLon }} />
+        <Marker
+          coordinate={{ latitude: positionLat, longitude: positionLon }}
+        />
       </MapView>
     </React.Fragment>
   );

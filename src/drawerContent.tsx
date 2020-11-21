@@ -6,6 +6,8 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import React from 'react';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { addUser, addUser2 } from './firebase';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import {
   Avatar,
@@ -38,7 +40,6 @@ export function DrawerContent(props: Props) {
   return (
     <DrawerContentScrollView {...props}>
       <Animated.View
-        //@ts-ignore
         style={[
           styles.drawerContent,
           {
@@ -54,76 +55,59 @@ export function DrawerContent(props: Props) {
               props.navigation.toggleDrawer();
             }}
           >
-            <Avatar.Image
-              source={{
-                uri:
-                  'https://pbs.twimg.com/profile_images/952545910990495744/b59hSXUd_400x400.jpg',
-              }}
+            <FontAwesome5
+              style={{ marginRight: 10 }}
+              name="user-circle"
               size={50}
+              color={paperTheme.colors.primary}
             />
           </TouchableOpacity>
-          <Title style={styles.title}>Dawid Urbaniak</Title>
-          <Caption style={styles.caption}>@trensik</Caption>
-          <View style={styles.row}>
-            <View style={styles.section}>
-              <Paragraph style={[styles.paragraph, styles.caption]}>
-                202
-              </Paragraph>
-              <Caption style={styles.caption}>Obserwuje</Caption>
-            </View>
-            <View style={styles.section}>
-              <Paragraph style={[styles.paragraph, styles.caption]}>
-                159
-              </Paragraph>
-              <Caption style={styles.caption}>Obserwujący</Caption>
-            </View>
-          </View>
+          <Title style={styles.title}>Profile Name</Title>
         </View>
-        <Drawer.Section style={styles.drawerSection}>
-          <DrawerItem
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons
-                name="account-outline"
-                color={color}
-                size={size}
-              />
-            )}
-            label="Profile"
-            onPress={() => {}}
-          />
-          <DrawerItem
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons name="tune" color={color} size={size} />
-            )}
-            label="Preferences"
-            onPress={() => {}}
-          />
-          <DrawerItem
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons
-                name="bookmark-outline"
-                color={color}
-                size={size}
-              />
-            )}
-            label="Bookmarks"
-            onPress={() => {}}
-          />
+
+        <Drawer.Section title="User informations">
+          <TouchableRipple
+            onPress={() => {
+              console.log('dududud');
+              addUser();
+            }}
+          >
+            <View style={styles.preference}>
+              <Text>Age</Text>
+              <View pointerEvents="none">
+                <Text>0</Text>
+              </View>
+            </View>
+          </TouchableRipple>
+          <TouchableRipple
+            onPress={() => {
+              console.log('dududud');
+              addUser2();
+            }}
+          >
+            <View style={styles.preference}>
+              <Text>Heigth</Text>
+              <View pointerEvents="none">
+                <Text>0</Text>
+              </View>
+            </View>
+          </TouchableRipple>
+          <TouchableRipple>
+            <View style={styles.preference}>
+              <Text>Weigth</Text>
+              <View pointerEvents="none">
+                <Text>0</Text>
+              </View>
+            </View>
+          </TouchableRipple>
         </Drawer.Section>
+
         <Drawer.Section title="Preferences">
           <TouchableRipple onPress={toggleTheme}>
             <View style={styles.preference}>
               <Text>Dark Theme</Text>
               <View pointerEvents="none">
                 <Switch value={theme === 'dark'} />
-              </View>
-            </View>
-          </TouchableRipple>
-          <TouchableRipple onPress={toggleRTL}>
-            <View style={styles.preference}>
-              <Text>RTL</Text>
-              <View pointerEvents="none">
-                <Switch value={rtl === 'right'} />
               </View>
             </View>
           </TouchableRipple>

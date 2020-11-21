@@ -3,7 +3,7 @@ import color from 'color';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { useTheme, Portal, FAB } from 'react-native-paper';
 import { useSafeArea } from 'react-native-safe-area-context';
-import { useIsFocused, RouteProp } from '@react-navigation/native';
+import { useIsFocused, RouteProp, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import overlay from './overlay';
 import { Feed } from './feed';
@@ -18,9 +18,7 @@ type Props = {
 };
 
 export const BottomTabs = (props: Props) => {
-  const routeName = props.route.state
-    ? props.route.state.routes[props.route.state.index].name
-    : 'Feed';
+  const routeName = getFocusedRouteNameFromRoute(props.route);
 
   const theme = useTheme();
   const safeArea = useSafeArea();
@@ -44,7 +42,7 @@ export const BottomTabs = (props: Props) => {
   return (
     <React.Fragment>
       <Tab.Navigator
-        initialRouteName="Feed"
+        initialRouteName="My training"
         backBehavior="initialRoute"
         shifting={true}
         activeColor={theme.colors.primary}
@@ -63,18 +61,10 @@ export const BottomTabs = (props: Props) => {
           }}
         />
         <Tab.Screen
-          name="Mój Trening"
+          name="Trening"
           component={Notifications}
           options={{
-            tabBarIcon: 'bell-outline',
-            tabBarColor,
-          }}
-        />
-        <Tab.Screen
-          name="Messages"
-          component={Message}
-          options={{
-            tabBarIcon: 'message-text-outline',
+            tabBarIcon: 'alarm',
             tabBarColor,
           }}
         />

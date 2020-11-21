@@ -45,7 +45,9 @@ export const Twitt = (props: Props) => {
     .string();
 
   return (
-    <TouchableRipple onPress={() => props.onPress(props.id)}>
+    <TouchableRipple
+      onPress={() => (props.onPress ? props.onPress(props.id) : null)}
+    >
       <Surface style={styles.container}>
         <View style={styles.leftColumn}>
           <Avatar.Image source={{ uri: props.avatar }} size={60} />
@@ -68,7 +70,7 @@ export const Twitt = (props: Props) => {
             ]}
           />
           <View style={styles.bottomRow}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {}}
               hitSlop={{ top: 10, bottom: 10 }}
             >
@@ -110,7 +112,7 @@ export const Twitt = (props: Props) => {
                 />
                 <Caption style={styles.iconDescription}>{props.hearts}</Caption>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </Surface>

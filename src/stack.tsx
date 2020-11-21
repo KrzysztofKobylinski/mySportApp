@@ -2,11 +2,10 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { Appbar, Avatar, useTheme } from 'react-native-paper';
-import { MaterialCommunityIcons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
-
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { Appbar, useTheme } from 'react-native-paper';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { BottomTabs } from './bottomTabs';
-import { Details } from './details';
 import { StackNavigatorParamlist } from './types';
 
 const Stack = createStackNavigator<StackNavigatorParamlist>();
@@ -44,28 +43,16 @@ export const StackNavigator = () => {
                     ((navigation as any) as DrawerNavigationProp<{}>).openDrawer();
                   }}
                 >
-                  <Avatar.Image
-                    size={40}
-                    source={{
-                      uri:
-                        'https://avatars2.githubusercontent.com/u/42326043?s=460&u=50906cebe8d834545c50dd97f74697aa0db39479&v=4',
-                    }}
+                  <FontAwesome5
+                    style={{ marginRight: 10 }}
+                    name="user-circle"
+                    size={30}
+                    color={theme.colors.primary}
                   />
                 </TouchableOpacity>
               )}
               <Appbar.Content
-                title={
-                  title === 'Feed' ? (
-                    <FontAwesome5
-                      style={{ marginRight: 10 }}
-                      name="running"
-                      size={40}
-                      color={theme.colors.primary}
-                    />
-                  ) : (
-                    title
-                  )
-                }
+                title={title}
                 titleStyle={{
                   fontSize: 18,
                   fontWeight: 'bold',
@@ -81,17 +68,8 @@ export const StackNavigator = () => {
         name="FeedList"
         component={BottomTabs}
         options={({ route }) => {
-          console.log('!@# options', { route });
-          const routeName = route.state
-            ? route.state.routes[route.state.index].name
-            : 'Feed';
-          return { headerTitle: routeName };
+          return { headerTitle: getFocusedRouteNameFromRoute(route) };
         }}
-      />
-      <Stack.Screen
-        name="Details"
-        component={Details}
-        options={{ headerTitle: 'Tweet' }}
       />
     </Stack.Navigator>
   );

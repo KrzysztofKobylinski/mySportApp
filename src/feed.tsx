@@ -24,20 +24,12 @@ type Props = {
 export const Feed = (props: Props) => {
   const theme = useTheme();
 
-  const data = twitts.map(twittProps => ({
-    ...twittProps,
-    onPress: () =>
-      props.navigation &&
-      props.navigation.push('Details', {
-        ...twittProps,
-      }),
-  }));
 
   return (
     <FlatList
       contentContainerStyle={{ backgroundColor: theme.colors.background }}
       style={{ backgroundColor: theme.colors.background }}
-      data={data}
+      data={twitts}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       ItemSeparatorComponent={() => (

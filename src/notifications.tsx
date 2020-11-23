@@ -3,7 +3,7 @@ import color from 'color';
 import { Text, PermissionsAndroid, Permission } from 'react-native';
 import { useTheme, Button, Menu, Divider } from 'react-native-paper';
 import overlay from './overlay';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, AnimatedRegion } from 'react-native-maps';
 import * as Permissions from 'expo-permissions';
 
 /* const initialLayout = { width: Dimensions.get('window').width };
@@ -14,11 +14,12 @@ const Mentions = () => <Feed />; */
 
 export const Notifications = () => {
   const [visible, setVisible] = React.useState(false);
-  const [positionLat, setPositionLat] = React.useState(52.20);
-  const [positionLon, setPositionLon] = React.useState(21.10);
+  const [positionLat, setPositionLat] = React.useState(52.2);
+  const [positionLon, setPositionLon] = React.useState(21.1);
   const [positionAlt, setPositionAlt] = React.useState(0);
   const [positionTimeStamp, setPositionTimeStamp] = React.useState(0);
   const [timer, setTimer] = React.useState(0);
+  const map = React.useRef(null);
 
   const checkLocationAfterTime = () => {
     navigator.geolocation.getCurrentPosition(
@@ -28,6 +29,14 @@ export const Notifications = () => {
         setPositionLon(position.coords.longitude);
         setPositionTimeStamp(position.timestamp);
         setPositionAlt(position.coords.altitude);
+        if (map.current) {
+          map.current.animateToRegion({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
+          });
+        }
       },
       err => console.log(err),
       { enableHighAccuracy: false, timeout: 8000, maximumAge: 10000 }
@@ -69,20 +78,20 @@ export const Notifications = () => {
     { key: 'mentions', title: 'Mentions' },
   ]); */
 
-  const theme = useTheme();
+  // const theme = useTheme();
 
   /* const renderScene = SceneMap({
     all: All,
     mentions: Mentions,
   }); */
 
-  const tabBarColor = theme.dark
-    ? (overlay(4, theme.colors.surface) as string)
-    : theme.colors.surface;
+  // const tabBarColor = theme.dark
+  //   ? (overlay(4, theme.colors.surface) as string)
+  //   : theme.colors.surface;
 
-  const rippleColor = theme.dark
-    ? color(tabBarColor).lighten(0.5)
-    : color(tabBarColor).darken(0.2);
+  // const rippleColor = theme.dark
+  //   ? color(tabBarColor).lighten(0.5)
+  //   : color(tabBarColor).darken(0.2);
   return (
     <React.Fragment>
       <Text> Lat:{positionLat}</Text>
@@ -111,13 +120,17 @@ export const Notifications = () => {
         <Menu.Item onPress={() => {}} title="Swimming" />
       </Menu>
       <MapView
+        ref={map}
+        showsUserLocation={true}
+        followsUserLocation={true}
         style={{ width: '100%', height: 200 }}
         initialRegion={{
           latitude: positionLat,
           longitude: positionLon,
-          latitudeDelta: 2.0922,
+          latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        onUserLocationChange={() => checkLocationAfterTime()}
       >
         <Marker
           coordinate={{ latitude: positionLat, longitude: positionLon }}
